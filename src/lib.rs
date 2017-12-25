@@ -94,19 +94,23 @@ TLE {
          */
         let satellite_number = line1[2..7].parse().expect("Could not parse field 'number'");
         let classification: char = line1.chars().nth(7).unwrap();
-        let international_designator = String::from(&line1[9..17]);
-        let first_derivative_mean_motion = 0.0;
-        let second_derivative_mean_motion = 0.0;
-        let bstar = 0.0;
-        let element_set_number = 0;
+        let international_designator = String::from((&line1[9..17]).trim());
+        let first_derivative_mean_motion = (line1[33..43].trim().parse::<f64>().expect("Could not parse field 'first derivative mean motion'")) * 2.0;
+        let second_derivative_mean_motion_mantissa: f64 = format!("{}0.{}", &line1[44..45], &line1[45..50]).trim().parse::<f64>().expect("Could not parse field 'second derivative mean motion' mantissa");
+        let second_derivative_mean_motion_exponent: f64 = line1[50..53].trim().parse::<f64>().expect("Could not parse field 'second derivative mean motion' exponent");
+        let second_derivative_mean_motion = second_derivative_mean_motion_mantissa * 10f64.powf(second_derivative_mean_motion_exponent) / 6.0;
+        let bstar_mantissa: f64 = format!("{}0.{}", &line1[53..54], &line1[54..59]).trim().parse::<f64>().expect("Could not parse field 'second derivative mean motion' mantissa");
+        let bstar_exponent: f64 = line1[59..61].trim().parse::<f64>().expect("Could not parse field 'second derivative mean motion' exponent");
+        let bstar = bstar_mantissa * 10f64.powf(bstar_exponent) / 6.0;
+        let element_set_number = line1[64..68].trim().parse().expect("Could not parse field 'element set number'");
 
-        let inclination = 0.0;
-        let right_ascension = 0.0;
-        let eccentricity = 0.0;
-        let argument_of_perigee = 0.0;
-        let mean_anomaly = 0.0;
-        let mean_motion = 0.0;
-        let revolution_number = 0;
+        let inclination = line2[8..16].trim().parse().expect("Could not parse field 'inclination'");
+        let right_ascension = line2[17..25].trim().parse().expect("Could not parse field 'right ascension'");
+        let eccentricity = format!("0.{}", &line2[26..33]).trim().parse().expect("Could not parse field 'eccentricity'");
+        let argument_of_perigee = line2[34..42].trim().parse().expect("Could not parse field 'argument of perigee'");
+        let mean_anomaly = line2[43..51].trim().parse().expect("Could not parse field 'mean anomaly'");
+        let mean_motion = line2[52..63].parse().expect("Could not parse field 'mean motion");
+        let revolution_number = line2[63..68].parse().expect("Could not parse field 'revolution number'");
 
         // count the lines, two line element sets are often three lines long...
         // let num_lines = lines.count();

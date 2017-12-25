@@ -17,7 +17,7 @@ fn parse_iss_tle() {
     // assert_eq!(tle.date)
     assert_eq!(tle.first_derivative_mean_motion, -0.00002182 * 2.0);
     assert_eq!(tle.second_derivative_mean_motion, 0.0);
-    assert_eq!(tle.bstar, -0.11606e-4);
+    assert_eq!(tle.bstar, -0.11606e-4 / 6.0);
     assert_eq!(tle.element_set_number, 292);
 
     // line 2
