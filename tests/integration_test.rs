@@ -14,7 +14,7 @@ fn parse_iss_tle() {
     assert_eq!(tle.satellite_number, 25544);
     assert_eq!(tle.classification, 'U');
     assert_eq!(tle.international_designator, "98067A");
-    // assert_eq!(tle.date)
+    assert_eq!(tle.date, "08264.51782528");
     assert_eq!(tle.first_derivative_mean_motion, -0.00002182 * 2.0);
     assert_eq!(tle.second_derivative_mean_motion, 0.0);
     assert_eq!(tle.bstar, -0.11606e-4 / 6.0);

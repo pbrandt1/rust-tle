@@ -27,7 +27,7 @@ TLE {
         pub satellite_number: u32,
         pub classification: char,
         pub international_designator: String,
-        // date: String,
+        pub date: String,
         pub first_derivative_mean_motion: f64,
         pub second_derivative_mean_motion: f64,
         pub bstar: f64,
@@ -92,9 +92,18 @@ TLE {
         1 25544U 98067A   08264.51782528 -.00002182  00000-0 -11606-4 0  2927
         2 25544  51.6416 247.4627 0006703 130.5360 325.0288 15.72125391563537
          */
+        // line 1
         let satellite_number = line1[2..7].parse().expect("Could not parse field 'number'");
         let classification: char = line1.chars().nth(7).unwrap();
         let international_designator = String::from((&line1[9..17]).trim());
+        // meh cannot figure out UTC timestamp right now
+        // let mut year: u32 = line1[18..20].trim().parse().expect("Could not parse epoch year");
+        // if year < 57 {
+        //     year = 2000 + year;
+        // } else {
+        //     year = 1900 + year;
+        // }
+        let date = format!("{}", &line1[18..32]);
         let first_derivative_mean_motion = (line1[33..43].trim().parse::<f64>().expect("Could not parse field 'first derivative mean motion'")) * 2.0;
         let second_derivative_mean_motion_mantissa: f64 = format!("{}0.{}", &line1[44..45], &line1[45..50]).trim().parse::<f64>().expect("Could not parse field 'second derivative mean motion' mantissa");
         let second_derivative_mean_motion_exponent: f64 = line1[50..53].trim().parse::<f64>().expect("Could not parse field 'second derivative mean motion' exponent");
@@ -104,6 +113,7 @@ TLE {
         let bstar = bstar_mantissa * 10f64.powf(bstar_exponent) / 6.0;
         let element_set_number = line1[64..68].trim().parse().expect("Could not parse field 'element set number'");
 
+        // line 2
         let inclination = line2[8..16].trim().parse().expect("Could not parse field 'inclination'");
         let right_ascension = line2[17..25].trim().parse().expect("Could not parse field 'right ascension'");
         let eccentricity = format!("0.{}", &line2[26..33]).trim().parse().expect("Could not parse field 'eccentricity'");
@@ -112,15 +122,12 @@ TLE {
         let mean_motion = line2[52..63].parse().expect("Could not parse field 'mean motion");
         let revolution_number = line2[63..68].parse().expect("Could not parse field 'revolution number'");
 
-        // count the lines, two line element sets are often three lines long...
-        // let num_lines = lines.count();
-        // println!("{}", num_lines);
-        // let number : u32 = 0;//lines[1][2..6].parse();
         TLE {
             name,
             satellite_number,
             classification,
             international_designator,
+            date,
             first_derivative_mean_motion,
             second_derivative_mean_motion,
             bstar,
