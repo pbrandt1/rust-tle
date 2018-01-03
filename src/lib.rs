@@ -43,7 +43,27 @@ TLE {
 
     impl Display for TLE {
         fn fmt(&self, f:&mut Formatter) -> fmt::Result {
-            write!(f, "{}\n{}", self.name, self.satellite_number)
+            write!(f, "{}\n1 {}{} {} {} {} {} {} {}\n2 {} {} {} {} {} {} {}",
+
+                self.name,
+
+                self.satellite_number,
+                self.classification,
+                self.international_designator,
+                self.date,
+                self.first_derivative_mean_motion,
+                self.second_derivative_mean_motion,
+                self.bstar,
+                self.element_set_number,
+
+                self.inclination,
+                self.right_ascension,
+                self.eccentricity,
+                self.argument_of_perigee,
+                self.mean_anomaly,
+                self.mean_motion,
+                self.revolution_number
+            )
         }
     }
 

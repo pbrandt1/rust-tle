@@ -2,6 +2,8 @@
 
 A tle parser and generator for rust.
 
+TLE format is really lame and super annoying. i'm just doing this to practice rust.
+
 Wikipedia's quick article on the [TLE format](https://en.wikipedia.org/wiki/Two-line_element_set#Format)
 
 For more in-depth info about the fields, visit to [celestrak's guide](https://celestrak.com/columns/v04n03/)

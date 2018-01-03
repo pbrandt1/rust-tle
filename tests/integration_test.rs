@@ -29,3 +29,12 @@ fn parse_iss_tle() {
     assert_eq!(tle.mean_motion, 15.72125391);
     assert_eq!(tle.revolution_number, 56353);
 }
+
+#[test]
+fn format_iss_tle() {
+    let s = String::from("ISS (ZARYA)\n1 25544U 98067A   08264.51782528 -.00002182  00000-0 -11606-4 0  2927\n2 25544  51.6416 247.4627 0006703 130.5360 325.0288 15.72125391563537");
+    let iss_tle = tle::parse_tle(&s);
+    let s2 = format!("{}", iss_tle);
+    println!("{}", s2);
+    assert_eq!(s, s2);
+}
