@@ -43,7 +43,15 @@ TLE {
 
     impl Display for TLE {
         fn fmt(&self, f:&mut Formatter) -> fmt::Result {
-            write!(f, "{}\n1 {}{} {} {} {} {} {} {}\n2 {} {} {} {} {} {} {}",
+
+            // let international_designator_padded = format!("{}   ", self.international_designator);
+            // let international_designator_padded = String::from(&international_designator_padded[0..8]);
+
+            let first_derivative_mean_motion = self.first_derivative_mean_motion / 2.0;
+            let first_derivative_mean_motion_str = format!("{:+10.8}", first_derivative_mean_motion);
+            let first_derivative_mean_motion_str = str::replace(&first_derivative_mean_motion_str, "0.", ".");
+            // let first_derivative_mean_motion_sign = first_derivative_mean_motion > 0 ? ' ' : '-';
+            write!(f, "{}\n1 {:5}{:1} {:8} {} {} {} {} {}\n2 {} {} {} {} {} {} {}",
 
                 self.name,
 
@@ -51,7 +59,7 @@ TLE {
                 self.classification,
                 self.international_designator,
                 self.date,
-                self.first_derivative_mean_motion,
+                first_derivative_mean_motion_str,
                 self.second_derivative_mean_motion,
                 self.bstar,
                 self.element_set_number,
