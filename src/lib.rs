@@ -43,18 +43,14 @@ TLE {
 
     impl Display for TLE {
         fn fmt(&self, f:&mut Formatter) -> fmt::Result {
-
-            // let international_designator_padded = format!("{}   ", self.international_designator);
-            // let international_designator_padded = String::from(&international_designator_padded[0..8]);
-
+            //
+            //  Line 1 stuff
+            //
             let first_derivative_mean_motion = self.first_derivative_mean_motion / 2.0;
             let first_derivative_mean_motion_str = format!("{:+10.8}", first_derivative_mean_motion);
             let first_derivative_mean_motion_str = str::replace(&first_derivative_mean_motion_str, "0.", ".");
-            // let first_derivative_mean_motion_sign = first_derivative_mean_motion > 0 ? ' ' : '-';
-            write!(f, "{}\n1 {:5}{:1} {:8} {} {} {} {} {}\n2 {} {} {} {} {} {} {}",
 
-                self.name,
-
+            let line1 = format!("1 {:5}{:1} {:8} {} {} {:8} {:8} {}",
                 self.satellite_number,
                 self.classification,
                 self.international_designator,
@@ -62,15 +58,50 @@ TLE {
                 first_derivative_mean_motion_str,
                 self.second_derivative_mean_motion,
                 self.bstar,
-                self.element_set_number,
+                self.element_set_number);
 
+            let mut checksum1 = 0;
+
+            for c in line1.chars() {
+                if c.is_digit(10) {
+                    checksum1 = checksum1 + c.to_digit(10).unwrap();
+                } else if c == '-' {
+                    checksum1 = checksum1 + 1;
+                }
+            }
+
+            checksum1 = checksum1 % 10;
+
+            //
+            // Line 2 stuff
+            //
+            let line2 = format!("2 {} {} {} {} {} {} {}",
                 self.inclination,
                 self.right_ascension,
                 self.eccentricity,
                 self.argument_of_perigee,
                 self.mean_anomaly,
                 self.mean_motion,
-                self.revolution_number
+                self.revolution_number);
+
+            let mut checksum2 = 0;
+
+            for c in line1.chars() {
+                if c.is_digit(10) {
+                    checksum2 = checksum2 + c.to_digit(10).unwrap();
+                } else if c == '-' {
+                    checksum2 = checksum2 + 1;
+                }
+            }
+
+            checksum2 = checksum2 % 10;
+
+            write!(f, "{}\n{}{}\n{}{}",
+                self.name,
+                line1,
+                checksum1,
+                line2,
+                checksum2
             )
         }
     }
