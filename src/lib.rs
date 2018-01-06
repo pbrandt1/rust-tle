@@ -50,7 +50,7 @@ TLE {
             let first_derivative_mean_motion_str = format!("{:+10.8}", first_derivative_mean_motion);
             let first_derivative_mean_motion_str = str::replace(&first_derivative_mean_motion_str, "0.", ".");
 
-            let line1 = format!("1 {:5}{:1} {:8} {} {} {:8} {:8} {}",
+            let line1 = format!("1 {:5}{:1} {:8} {} {} {:8} {:8.5} 0 {:4}",
                 self.satellite_number,
                 self.classification,
                 self.international_designator,
@@ -75,10 +75,11 @@ TLE {
             //
             // Line 2 stuff
             //
-            let line2 = format!("2 {} {} {} {} {} {} {}",
+            let line2 = format!("2 {:5} {:8} {:8} {} {:8} {} {}{}",
+                self.satellite_number,
                 self.inclination,
                 self.right_ascension,
-                self.eccentricity,
+                str::replace(&format!("{}", self.eccentricity), "0.", ""),
                 self.argument_of_perigee,
                 self.mean_anomaly,
                 self.mean_motion,
