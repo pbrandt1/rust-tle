@@ -50,14 +50,25 @@ TLE {
             let first_derivative_mean_motion_str = format!("{:+10.8}", first_derivative_mean_motion);
             let first_derivative_mean_motion_str = str::replace(&first_derivative_mean_motion_str, "0.", ".");
 
-            let line1 = format!("1 {:5}{:1} {:8} {} {} {:8} {:8.5} 0 {:4}",
+            // the value -12345-6 corresponds to -0.12345 × 10-6
+            let bstar = str::replace(&format!("{:.4e}",self.bstar * 10.0), "e-", "-"); // times 10 b/c we remove the decimal point later
+            let bstar = str::replace(&bstar, "e0", "-0"); // make sure it's 00000-0 not 00000+0
+            let bstar = str::replace(&bstar, "e", "+");
+            let bstar = str::replace(&bstar, ".", "");
+
+            let second_derivative_mean_motion = str::replace(&format!("{:.4e}",self.second_derivative_mean_motion * 10.0), "e-", "-");
+            let second_derivative_mean_motion = str::replace(&second_derivative_mean_motion, "e0", "-0");
+            let second_derivative_mean_motion = str::replace(&second_derivative_mean_motion, "e", "+");
+            let second_derivative_mean_motion = str::replace(&second_derivative_mean_motion, ".", "");
+
+            let line1 = format!("1 {:5}{:1} {:8} {:14} {:10} {:>8} {:>8} 0 {:4}",
                 self.satellite_number,
                 self.classification,
                 self.international_designator,
                 self.date,
                 first_derivative_mean_motion_str,
-                self.second_derivative_mean_motion,
-                self.bstar,
+                second_derivative_mean_motion,
+                bstar,
                 self.element_set_number);
 
             let mut checksum1 = 0;
@@ -75,7 +86,7 @@ TLE {
             //
             // Line 2 stuff
             //
-            let line2 = format!("2 {:5} {:8} {:8} {} {:8} {} {}{}",
+            let line2 = format!("2 {:5} {:8} {:8} {:7} {:8.5} {:8} {:11}{:5}",
                 self.satellite_number,
                 self.inclination,
                 self.right_ascension,
@@ -170,7 +181,7 @@ TLE {
         let second_derivative_mean_motion = second_derivative_mean_motion_mantissa * 10f64.powf(second_derivative_mean_motion_exponent) / 6.0;
         let bstar_mantissa: f64 = format!("{}0.{}", &line1[53..54], &line1[54..59]).trim().parse::<f64>().expect("Could not parse field 'second derivative mean motion' mantissa");
         let bstar_exponent: f64 = line1[59..61].trim().parse::<f64>().expect("Could not parse field 'second derivative mean motion' exponent");
-        let bstar = bstar_mantissa * 10f64.powf(bstar_exponent) / 6.0;
+        let bstar = bstar_mantissa * 10f64.powf(bstar_exponent);
         let element_set_number = line1[64..68].trim().parse().expect("Could not parse field 'element set number'");
 
         // line 2
