@@ -86,7 +86,7 @@ TLE {
             //
             // Line 2 stuff
             //
-            let line2 = format!("2 {:5} {:8} {:8} {:7} {:8.5} {:8} {:11}{:5}",
+            let line2 = format!("2 {:5} {:8} {:8} {:7} {:8} {:8} {:11}{:5}",
                 self.satellite_number,
                 self.inclination,
                 self.right_ascension,
