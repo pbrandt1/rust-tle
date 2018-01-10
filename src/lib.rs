@@ -1,25 +1,4 @@
 use std::fmt::{self, Formatter, Display};
-/*
-TLE {
-  name: 'ISS (ZARYA)',
-  number: 25544,
-  class: 'U',
-  id: '98067A',
-  date: Date<'2008-09-20T12:25:40.104Z'>,
-  fdmm: -0.00002182,
-  sdmm: 0,
-  drag: -1.1606,
-  ephemeris: 0,
-  esn: 292,
-  inclination: 51.6416,
-  ascension: 247.4627,
-  eccentricity: 0.0006703,
-  perigee: 130.536,
-  anomaly: 325.0288,
-  motion: 15.721253915,
-  revolution: 6353
-}
- */
 
     #[derive(Debug)]
     pub struct TLE {
@@ -190,8 +169,8 @@ TLE {
         let eccentricity = format!("0.{}", &line2[26..33]).trim().parse().expect("Could not parse field 'eccentricity'");
         let argument_of_perigee = line2[34..42].trim().parse().expect("Could not parse field 'argument of perigee'");
         let mean_anomaly = line2[43..51].trim().parse().expect("Could not parse field 'mean anomaly'");
-        let mean_motion = line2[52..63].parse().expect("Could not parse field 'mean motion");
-        let revolution_number = line2[63..68].parse().expect("Could not parse field 'revolution number'");
+        let mean_motion = line2[52..63].trim().parse().expect("Could not parse field 'mean motion");
+        let revolution_number = line2[63..68].trim().parse().expect("Could not parse field 'revolution number'");
 
         TLE {
             name,
@@ -212,3 +191,10 @@ TLE {
             revolution_number
         }
     }
+
+    // fun parse_f64(str, name) -> f64 {
+    //     let value = str
+    //         .trim()
+    //         .parse()
+    //         .expect(format!("Failed parsing {}, tried \"{}\"", name, str))
+    // }

@@ -38,3 +38,18 @@ fn format_iss_tle() {
     println!("{}", s2);
     assert_eq!(s, s2);
 }
+
+
+#[test]
+fn classified_tle() {
+    /*
+    USA 279                                               1134 X 35924 km
+    1 76402U 17066A   17288.48263889  .00000000  00000-0  00000-0 0    06
+    2 76402  18.6773 325.4987 6983832 178.5899 122.0404  2.20915106    06
+
+    1 NNNNNC NNNNNAAA NNNNN.NNNNNNNN +.NNNNNNNN +NNNNN-N +NNNNN-N N NNNNN
+    2 NNNNN NNN.NNNN NNN.NNNN NNNNNNN NNN.NNNN NNN.NNNN NN.NNNNNNNNNNNNNN
+     */
+    let s = String::from("USA 279                                               1134 X 35924 km\n1 76402U 17066A   17288.48263889  .00000000  00000-0  00000-0 0    06\n2 76402  18.6773 325.4987 6983832 178.5899 122.0404  2.20915106    06");
+    tle::parse_tle(&s); // make sure it parses w/o error
+}
