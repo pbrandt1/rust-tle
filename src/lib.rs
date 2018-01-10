@@ -143,7 +143,7 @@ use std::fmt::{self, Formatter, Display};
         2 25544  51.6416 247.4627 0006703 130.5360 325.0288 15.72125391563537
          */
         // line 1
-        let satellite_number = line1[2..7].parse().expect("Could not parse field 'number'");
+        let satellite_number = line1[2..7].trim().parse().expect("Could not parse field 'number'");
         let classification: char = line1.chars().nth(7).unwrap();
         let international_designator = String::from((&line1[9..17]).trim());
         // meh cannot figure out UTC timestamp right now
